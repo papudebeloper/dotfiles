@@ -1,0 +1,33 @@
+#! /bin/sh
+
+
+# Autostart
+pgrep -x sxhkd > /dev/null || sxhkd &
+xrandr --output DP-0 --mode 1920x1080 --rate 164.84
+feh --bg-scale /home/joaquin/Imágenes/wallpapertip_4k-wallpaper-laptop_1796891.jpg
+
+# Terminate already running bar instances
+killall -q polybar
+
+# Wait untill the processes have been shut down
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+
+#Launch bar 
+polybar example -r &
+
+# Workspaces
+bspc monitor -d 1 2 3 4
+
+# Window configuration
+bspc config border_width         1
+bspc config window_gap          15
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+# no se ke es esto
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Chromium desktop='^2'
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
